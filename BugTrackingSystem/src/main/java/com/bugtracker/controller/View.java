@@ -8,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import com.bugtracker.service.ViewService;
-import com.bugtracker.model.Employee;
 
 @Controller
 public class View {

@@ -39,8 +39,9 @@ input[type=submit]:hover {
 				PASSWORD</label> <input type="password" name="EmployeePassword"> <input
 				type="submit" value="ADD">
 		</form>
+		<p>${message}</p>
 	</div>
-	<p>${message}</p>
+	
 
 </body>
 </html>

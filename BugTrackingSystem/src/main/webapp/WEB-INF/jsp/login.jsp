@@ -4,9 +4,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Login Page</title>
+<meta http-equiv="Cache-control" content="no-cache">
+<title>BUG TRACKING SYSTEM</title>
+
 <style>
-/* Basics */
 html, body {
     width: 100%;
     height: 100%;
@@ -148,9 +149,8 @@ margin-left:10%;
             <div id="lower">
                 <input type="submit" value="LOGIN">
                 <p>${message}</p>
-            </div><!--/ lower-->
+            </div>
         </form>
-    </div><!--/ container-->
-    <!-- End Page Content -->
+    </div>
 </body>
 </html>

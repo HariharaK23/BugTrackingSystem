@@ -47,12 +47,9 @@
 				<td>${emp[3]}</td>
 				<td>${emp[4]}</td>
 				<td>${emp[5]}</td>
-				<td>
-				<form modelAttribute="Employee" action="updateEmployee" method="post">
-				<button value="${emp[0]}" type="submit">UPDATE</button>
-				</form>
+				<td>		
 				<form modelAttribute="Employee" action="removeEmployee" method="post">
-				<button value="${emp[0]}" type="submit">REMOVE</button>
+				<button name="EmployeeEmail" value="${emp[0]}" type="submit">REMOVE</button>
 				</form>
 				</td>
 				<tr></tr>

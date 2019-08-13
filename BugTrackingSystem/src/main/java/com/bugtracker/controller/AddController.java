@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bugtracker.model.Employee;
-import com.bugtracker.model.Login;
 import com.bugtracker.service.AddService;
 
 @Controller
@@ -30,31 +29,59 @@ public class AddController {
 		ModelAndView modelAndView;
 		System.out.println(employee.getEmployeeEmail() + " " + employee.getEmployeePassword());
 		
-		if (AddService.addEmployee(employee)) {
-			modelAndView = new ModelAndView("addEmployee");
+		if (AddService.addEmployees(employee)) {
+			modelAndView = new ModelAndView("admin");
 			modelAndView.addObject("message", "SUCCESS");
 		} else {
-			modelAndView = new ModelAndView("addEmployee");
+			modelAndView = new ModelAndView("admin");
 			modelAndView.addObject("message", "FAILURE");
 		}
 
 		return modelAndView;
 	}
+	
 	@RequestMapping(value = "/removeEmployee", method = RequestMethod.POST)
 	public ModelAndView removeEmployee(HttpServletRequest request, HttpServletResponse httpServletResponse,
 			@ModelAttribute("employee") Employee employee) {
 		ModelAndView modelAndView;
-		System.out.println(employee.getEmployeeEmail() + " " + employee.getEmployeePassword());
+		System.out.println(employee.getEmployeeEmail());
 		
-		if (AddService.addEmployee(employee)) {
-			modelAndView = new ModelAndView("addEmployee");
+		if (AddService.removeEmployee(employee)) {
+			modelAndView = new ModelAndView("admin");
 			modelAndView.addObject("message", "SUCCESS");
 		} else {
-			modelAndView = new ModelAndView("addEmployee");
+			modelAndView = new ModelAndView("admin");
 			modelAndView.addObject("message", "FAILURE");
 		}
 
 		return modelAndView;
 	}
+	
+	
+	
+	@RequestMapping(value="/updateProfile")
+	public String update(Model model,@ModelAttribute("employee") Employee employee) {
+//		Employee employee= new Employee();
+//		model.addAttribute("employee", employee);
+		return "updateEmployeeProfile";
+		
+	}
+	
+	
+	
+	@RequestMapping(value = "/updateProcess", method = {/*RequestMethod.GET,*/RequestMethod.POST})
+	public ModelAndView updateEmployee(HttpServletRequest request, HttpServletResponse httpServletResponse,
+			@ModelAttribute("employee") Employee employee) {
+		ModelAndView modelAndView;
+		if (AddService.updateEmployee(employee)) {
+			modelAndView = new ModelAndView("updateEmployeeProfile");
+			modelAndView.addObject("message", "SUCCESS");
+		} else {
+			modelAndView = new ModelAndView("updateEmployeeProfile");
+			modelAndView.addObject("message", "FAILURE");
+		}
+		return modelAndView;
+	}
+	
 	
 }

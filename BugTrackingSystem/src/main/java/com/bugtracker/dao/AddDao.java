@@ -1,38 +1,14 @@
 package com.bugtracker.dao;
 
-import java.sql.DriverManager;
-import java.sql.ResultSet;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.bugtracker.model.Employee;
 
 public class AddDao {
 
-	public static boolean addEmployee(Employee employee) {
-		final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-		final String DB_URL = "jdbc:mysql://localhost:3306/bug_ tracking_system";
-		final String USER = "root";
-		final String PASS = "";
-
-		java.sql.Connection conn = null;
-		try {
-			// STEP 1: Register JDBC driver
-			Class.forName(JDBC_DRIVER);
-
-			// STEP 2: Open a connection
-			System.out.println("Connecting to database...");
-
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
-
-			// STEP 3: Execute a query
-			System.out.println("Connected database successfully...");
-		} catch (Exception e) {
-			System.out.println("ex here");
-		}
-
+	public static boolean addEmployee(Connection conn,Employee employee) {
+		
 		Statement statement = null;
 		try {
 			String email=employee.getEmployeeEmail();
@@ -43,7 +19,63 @@ public class AddDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 		return true;
+	}
+
+	public static boolean removeEmployee(Connection conn,Employee employee) {
+		Statement statement = null;
+		try {
+			String email=employee.getEmployeeEmail();
+			statement = (Statement) conn.createStatement();
+			String sql = "DELETE FROM employee where emp_email='"+email+"'";
+			statement.execute(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return true;
+	}
+
+	public static boolean updateEmployee(Connection conn,Employee employee) {
+		Statement statement = null;
+		try {
+			
+			System.out.println("came here for update");
+			String email=employee.getEmployeeEmail();
+			String name=employee.getEmployeeName();
+			String password=employee.getEmployeePassword();
+			System.out.println(password);
+			Long phone=employee.getEmployeePhone();
+			statement = (Statement) conn.createStatement();
+			String sql = "UPDATE employee set emp_name='"+name+"',emp_pwd='"+password+"',phone="+phone+" where emp_email='"+email+"'";
+			statement.execute(sql);
+			System.out.println("came here after update");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return true;
+		
+		
 	}
 
 }

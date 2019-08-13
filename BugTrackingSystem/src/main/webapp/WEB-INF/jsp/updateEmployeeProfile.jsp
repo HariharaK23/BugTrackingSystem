@@ -3,7 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <style>
-input[type=email], [type=password]{
+input{
 	width: 100%;
 	padding: 12px 20px;
 	margin: 8px 0;
@@ -13,7 +13,7 @@ input[type=email], [type=password]{
 	box-sizing: border-box;
 }
 
-input[type=submit] {
+button[type=submit] {
 	width: 100%;
 	background-color: #4CAF50;
 	color: white;
@@ -33,20 +33,18 @@ input[type=submit]:hover {
 <body>
 	<div>
 		<div style="padding-left: 16px"></div>
-		<form action="updateProcess" method="post">
-			<label for="EmployeEmail">EMPLOYEE EMAIL</label>
-			<input type="email"name="EmployeeEmail"> 
-			
-			<label for="EmployeePassword">EMPLOYEEPASSWORD</label>
+			<form modelAttribute="Employee" action="updateProcess" method="post">
+			<p>WELCOME ${username}</p>		
+			<label for="EmployeePassword">EMPLOYEE PASSWORD</label>
 			<input type="password" name="EmployeePassword"> 
 			
 			<label for="EmployeeName">EMPLOYEE NAME</label>
-			<input type="text"name="EmployeeEmail"> 
+			<input type="text"name="EmployeeName"> 
 			
 			<label for="EmployeePhone">PHONE</label>
-			<input type="number" name="EmployeePassword"> 
-			<input type="submit" value="ADD">
-		</form>
+			<input type="number" name="EmployeePhone"> 	
+			<button name="EmployeeEmail" value="${username}" type="submit">UPDATE</button>
+			</form>		
 	</div>
 	<p>${message}</p>
 

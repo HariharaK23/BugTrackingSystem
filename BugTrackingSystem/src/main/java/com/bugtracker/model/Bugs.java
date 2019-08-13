@@ -16,9 +16,6 @@ public class Bugs {
 	public int getBug_projectId() {
 		return bug_projectId;
 	}
-//	public void setBug_projectId(int bug_projectId) {
-//		this.bug_projectId = bug_projectId;
-//	}
 	public String getBug_developerName() {
 		return bug_developerName;
 	}
@@ -50,7 +47,7 @@ public class Bugs {
 				+ ", solution=" + solution + "]";
 	}
 	public void setBug_projectId(int bug_projectId2) {
-		// TODO Auto-generated method stub
+		this.bug_projectId=bug_projectId2;
 		
 	}
 	
