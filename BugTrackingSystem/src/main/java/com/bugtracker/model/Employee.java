@@ -1,59 +1,55 @@
 package com.bugtracker.model;
 
-
 public class Employee {
-	 String EmployeeEmail;
-	 String EmployeePassword;
-	 String EmployeeName;
-	 String EmployeeDesignation;
-	 int EmployeeProjectId;
-	 Long EmployeePhone;
-	
+	private String employeeEmail;
+	private String employeePassword;
+	private String employeeName;
+	private String employeeDesignation;
+	private long employeePhone;
+	private int employeeProjectId;
 	public String getEmployeeEmail() {
-		return EmployeeEmail;
+		return employeeEmail;
 	}
 	public void setEmployeeEmail(String employeeEmail) {
-		EmployeeEmail = employeeEmail;
+		this.employeeEmail = employeeEmail;
 	}
 	public String getEmployeePassword() {
-		return EmployeePassword;
+		return employeePassword;
 	}
 	public void setEmployeePassword(String employeePassword) {
-		EmployeePassword = employeePassword;
+		this.employeePassword = employeePassword;
 	}
 	public String getEmployeeName() {
-		return EmployeeName;
+		return employeeName;
 	}
 	public void setEmployeeName(String employeeName) {
-		EmployeeName = employeeName;
+		this.employeeName = employeeName;
 	}
 	public String getEmployeeDesignation() {
-		return EmployeeDesignation;
+		return employeeDesignation;
 	}
 	public void setEmployeeDesignation(String employeeDesignation) {
-		EmployeeDesignation = employeeDesignation;
+		this.employeeDesignation = employeeDesignation;
+	}
+	public long getEmployeePhone() {
+		return employeePhone;
+	}
+	public void setEmployeePhone(long employeePhone) {
+		this.employeePhone = employeePhone;
 	}
 	public int getEmployeeProjectId() {
-		return EmployeeProjectId;
+		return employeeProjectId;
 	}
 	public void setEmployeeProjectId(int employeeProjectId) {
-		EmployeeProjectId = employeeProjectId;
-	}
-	public Long getEmployeePhone() {
-		return EmployeePhone;
-	}
-	public void setEmployeePhone(Long employeePhone) {
-		EmployeePhone = employeePhone;
+		this.employeeProjectId = employeeProjectId;
 	}
 	@Override
 	public String toString() {
-		return "Employee [EmployeeEmail=" + EmployeeEmail + ", EmployeePassword=" + EmployeePassword + ", EmployeeName="
-				+ EmployeeName + ", EmployeeDesignation=" + EmployeeDesignation + ", EmployeeProjectId="
-				+ EmployeeProjectId + ", EmployeePhone=" + EmployeePhone + "]";
+		return "Employee [employeeEmail=" + employeeEmail + ", employeePassword=" + employeePassword + ", employeeName="
+				+ employeeName + ", employeeDesignation=" + employeeDesignation + ", employeePhone=" + employeePhone
+				+ ", employeeProjectId=" + employeeProjectId + "]";
 	}
 	
 	
-	
-	
-	
+
 }

@@ -1,87 +1,55 @@
 package com.bugtracker.controller;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.bugtracker.model.Employee;
-import com.bugtracker.service.AddService;
+import com.bugtracker.model.Bug;
+import com.bugtracker.model.Project;
+import com.bugtracker.service.UserService;
 
 @Controller
 public class AddController {
-	AddService addService= new AddService();
-	@RequestMapping(value="/addEmployee")
-	public String addEmployee(Model model) {
-		Employee employee= new Employee();
-		model.addAttribute("employee", employee);
-		return "addEmployee";
-		
-	}
-	
-	@RequestMapping(value = "/addProcess", method = RequestMethod.POST)
-	public ModelAndView loginProcess(HttpServletRequest request, HttpServletResponse httpServletResponse,
-			@ModelAttribute("employee") Employee employee) {
-		ModelAndView modelAndView;
-		System.out.println(employee.getEmployeeEmail() + " " + employee.getEmployeePassword());
-		
-		if (AddService.addEmployees(employee)) {
-			modelAndView = new ModelAndView("admin");
-			modelAndView.addObject("message", "SUCCESS");
-		} else {
-			modelAndView = new ModelAndView("admin");
-			modelAndView.addObject("message", "FAILURE");
-		}
 
-		return modelAndView;
+	@Autowired
+	public UserService userService;
+	
+	@RequestMapping(value = "/AddBugProcess", method = RequestMethod.POST)
+	public ModelAndView AddBugProcess(@ModelAttribute("bug") Bug bug) {
+		ModelAndView mav = null;
+		Boolean ret=userService.addBug(bug);
+		if (ret) {
+			mav = new ModelAndView("TestingTeam");
+			mav.addObject("message", "DONE");
+		} else {
+			mav = new ModelAndView("TestingTeam");
+			mav.addObject("message", "ERROR");
+		}
+		return mav;
 	}
 	
-	@RequestMapping(value = "/removeEmployee", method = RequestMethod.POST)
-	public ModelAndView removeEmployee(HttpServletRequest request, HttpServletResponse httpServletResponse,
-			@ModelAttribute("employee") Employee employee) {
-		ModelAndView modelAndView;
-		System.out.println(employee.getEmployeeEmail());
-		
-		if (AddService.removeEmployee(employee)) {
-			modelAndView = new ModelAndView("admin");
-			modelAndView.addObject("message", "SUCCESS");
-		} else {
-			modelAndView = new ModelAndView("admin");
-			modelAndView.addObject("message", "FAILURE");
-		}
 
-		return modelAndView;
-	}
-	
-	
-	
-	@RequestMapping(value="/updateProfile")
-	public String update(Model model,@ModelAttribute("employee") Employee employee) {
-//		Employee employee= new Employee();
-//		model.addAttribute("employee", employee);
-		return "updateEmployeeProfile";
-		
-	}
-	
-	
-	
-	@RequestMapping(value = "/updateProcess", method = {/*RequestMethod.GET,*/RequestMethod.POST})
-	public ModelAndView updateEmployee(HttpServletRequest request, HttpServletResponse httpServletResponse,
-			@ModelAttribute("employee") Employee employee) {
-		ModelAndView modelAndView;
-		if (AddService.updateEmployee(employee)) {
-			modelAndView = new ModelAndView("updateEmployeeProfile");
-			modelAndView.addObject("message", "SUCCESS");
+	@RequestMapping(value = "/AddProjectProcess", method = RequestMethod.POST)
+	public ModelAndView AddProjectProcess(@ModelAttribute("project") Project project,HttpSession session) {
+		ModelAndView mav = null;
+		String manager=(String) session.getAttribute("emp_name");
+		Boolean ret=userService.addProject(project,manager);
+		if (ret) {
+			mav = new ModelAndView("Managers");
+			mav.addObject("message", "DONE");
 		} else {
-			modelAndView = new ModelAndView("updateEmployeeProfile");
-			modelAndView.addObject("message", "FAILURE");
+			mav = new ModelAndView("TestingTeam");
+			mav.addObject("message", "ERROR");
 		}
-		return modelAndView;
+		return mav;
 	}
-	
-	
+
 }

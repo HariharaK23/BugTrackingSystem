@@ -1,82 +1,77 @@
 package com.bugtracker.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
-
+import com.bugtracker.model.Admin;
+import com.bugtracker.model.Employee;
 import com.bugtracker.model.Login;
-import com.bugtracker.service.UserServiceImpl;
-
+import com.bugtracker.service.UserService;
 
 @Controller
-@SessionAttributes("username")
+@SessionAttributes("emp_name")
 public class LoginController {
 
-	UserServiceImpl userServiceImpl = new UserServiceImpl();
+	@Autowired
+	public UserService userService;
 
-	@RequestMapping(value = "/login")
-	public String login(Model model,HttpSession session) {
-		return "login";
-	}
-	
-	@RequestMapping(value = "/emplogin")
-	public String emplogin(Model model) {
-		return "employeelogin";
+	@RequestMapping(value = "/AdminLogin", method = RequestMethod.GET)
+	public ModelAndView showAdminLogin() {
+		ModelAndView mav = new ModelAndView("AdminLogin");
+		mav.addObject("login", new Login());
+		return mav;
 	}
 
-	@RequestMapping(value = "/adminlog", method = RequestMethod.POST)
-	public ModelAndView loginProcess(HttpServletRequest request, HttpServletResponse httpServletResponse,
-			@ModelAttribute("login") Login login,HttpSession session) {
-		ModelAndView modelAndView;
-//		String admin= (String) session.getAttribute("admin");
-//		String button=(String) session.getAttribute("button");
-//		if(null==admin) {
-//			System.out.println("SESSION ENDED");
-//			modelAndView = new ModelAndView("login");
-//		}
-		 if (userServiceImpl.loginValidation(login)) {
-			session.setAttribute("admin",login.getUsername());
-			modelAndView = new ModelAndView("admin");
+	@RequestMapping(value = "/AdminLoginProcess", method = RequestMethod.POST)
+	public ModelAndView AdminloginProcess(@ModelAttribute("login") Login login) {
+		ModelAndView mav = null;
+		Admin admin = userService.validateAdmin(login);
+		if (null != admin) {
+			mav = new ModelAndView("Admin");
 		} else {
-			modelAndView = new ModelAndView("login");
-			modelAndView.addObject("message", "INVALID USERNAME OR PASSWORD");
+			mav = new ModelAndView("AdminLogin");
+			mav.addObject("message", "Username or Password is wrong!!");
 		}
-		return modelAndView;
+		return mav;
 	}
-	
-	@RequestMapping(value = "/logout")
-    public String logout(HttpServletRequest request,HttpSession session) {
-        session = request.getSession();
-        session.removeAttribute("admin");
-        session.invalidate();
-        return "login";
-    }
-	
-	
-	
-	@RequestMapping(value = "/employeelog", method = RequestMethod.POST)
-	public ModelAndView emploginProcess(HttpServletRequest request, HttpServletResponse httpServletResponse,
-			@ModelAttribute("login") Login login) {
-		ModelAndView modelAndView = new ModelAndView();
-		if (userServiceImpl.emploginValidation(login)) {
-		        modelAndView.addObject("username", login.getUsername());
-		        modelAndView.setViewName("employee");
-		} else {
-			modelAndView = new ModelAndView("employeelogin");
-			modelAndView.addObject("message", "INVALID USERNAME OR PASSWORD");
+
+	@RequestMapping(value = "/EmployeeLogin", method = RequestMethod.GET)
+	public ModelAndView showEmployeeLogin() {
+		ModelAndView mav = new ModelAndView("EmployeeLogin");
+		mav.addObject("login", new Login());
+		return mav;
+	}
+
+	@RequestMapping(value = "/EmployeeLoginProcess", method = RequestMethod.POST)
+	public ModelAndView EmployeeloginProcess(@ModelAttribute("login") Login login, HttpSession session) {
+		ModelAndView mav = null;
+		Employee employee = userService.validateEmployee(login);
+		String designation = null;
+		try {
+			designation = employee.getEmployeeDesignation();
+			session.setAttribute("emp_name", employee.getEmployeeName());
+		} catch (NullPointerException e) {
 		}
 
-		return modelAndView;
+		if (null != employee && designation.equals("Coder")) {
+			mav = new ModelAndView("CodingTeam");
+		} else if (null != employee && designation.equals("Tester")) {
+			mav = new ModelAndView("TestingTeam");
+		} else if (null != employee && designation.equals("Manager")) {
+			mav = new ModelAndView("Managers");
+		} else {
+			mav = new ModelAndView("EmployeeLogin");
+			mav.addObject("message", "Username or Password is wrong!!");
+		}
+
+		return mav;
 	}
-	
 
 }
